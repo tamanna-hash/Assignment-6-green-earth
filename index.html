@@ -66,7 +66,7 @@
             <img class="" src="./assets/hero-leaf1.png" alt="">
         </div>
         <div class="text-center space-y-2 md:space-y-4">
-            <h1 class="md:text-[32px] text-xl font-bold">Plant a Tree, Grow a Future</h1>
+            <h1 class="md:text-[32px] text-2xl  text-center font-bold">Plant a Tree, Grow a Future</h1>
             <p class="text-sm text-gray-600 ">Join our mission to plant 1 million trees and make the Earth greener for
                 future
                 generations.</p>
@@ -81,8 +81,13 @@
         <!-- choose your trees section------- -->
         <section class="pt-14 space-y-7">
             <h1 class="text-center text-xl font-semibold  md:text-3xl">Choose Your Trees</h1>
+            <!-- spinner-------------------------------------------------------------- -->
+            <section id="spinner" class="flex justify-center items-center pt-10 hidden">
+                <span class="loading loading-dots loading-xl"></span>
+            </section>
             <div class="flex flex-col md:grid md:grid-cols-12 gap-3 justify-around w-11/12 mx-auto">
                 <div class="lg:col-span-2 md:col-span-3 ml-4">
+
                     <!-- categorie--------------------------- -->
                     <h1 class="font-semibold text-xl text-left">Categories</h1>
                     <div id="categorie-container">
@@ -119,8 +124,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="bg-white px-2 col-span-3 lg:col-span-2">
+                    <h1 class="text-xl font-semibold my-2">Your Cart</h1>
+                    <div id="cart-container" class="mx-2">
+
+                    </div>
+                    <div class="flex border-t-1 border-gray-500">
+                        <p class="font-semibold">Total:</p>
+                        <p class=" text-gray-500">$<span id="total-price"></span></p>
+                    </div>
+                </div>
             </div>
-            <div class="bg-slate-400 col-span-3 lg:col-span-2"></div>
+
         </section>
         <!-- about campaign section -->
         <section class="md:w-8/12 mx-auto pt-12">
