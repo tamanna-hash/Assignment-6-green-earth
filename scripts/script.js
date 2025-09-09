@@ -20,13 +20,13 @@ const removeActive = () => {
     category.forEach(btn => btn.classList.remove('active'))
 }
 const loadAllCards = () => {
-     manageSpinner(true);
+    manageSpinner(true);
     fetch('https://openapi.programming-hero.com/api/plants')
         .then(res => res.json())
         .then(data => displayCards(data.plants))
 }
 const loadCategoryCard = (id) => {
-     manageSpinner(true);
+    manageSpinner(true);
     const url = `https://openapi.programming-hero.com/api/category/${id}`
     fetch(url)
         .then(res => res.json())
@@ -42,20 +42,53 @@ const loadCardDetail = async (id) => {
     const details = await res.json();
     displayDetail(details)
 }
+let total = 0;
 const addToCart = (name, price, id) => {
     const cartContainer = document.getElementById('cart-container');
     const singleCart = document.createElement('div');
-    singleCart.innerHTML = `<div id="single-cart-${id}" class="flex items-center justify-between bg-[#F0FDF4] rounded-lg p-1">
+    singleCart.innerHTML = `<div id="single-cart-${id}" class=" cart flex items-center justify-between bg-[#F0FDF4] rounded-lg p-1">
                             <div class="space-y-2">
                                 <p class="text-sm font-semibold">${name}</p>
                                 <p class="text-gray-500">$${price} x 1</p>
                             </div>
-                            <i onclick="removeCart(${id})" class="fa-solid fa-xmark text-gray-500"></i>
+                            <i id="cart-cross-icon-${id}"  class="cross-btn-${id} fa-solid fa-xmark text-gray-500"></i>
                         </div>`
     cartContainer.append(singleCart)
-}
-const removeCart = (id) => {
-    document.getElementById(`single-cart-${id}`).innerHTML = "";
+    // 1.get the container
+    const showTotal = document.getElementById('total-price')
+    //2.get the price already exist
+    // 3.add the price
+    total = total + price;
+    // 4.price to container inner text
+    showTotal.innerText = total;
+    // 
+    // document.getElementById(`cart-cross-icon-${id}`)
+    document.body.addEventListener('click', function (e) {
+        if (e.target.classList.contains(`cross-btn-${id}`)) {
+            // document.getElementById(`single-cart-${id}`).innerHTML = "";
+            const cart = e.target.closest(".cart");
+            cart.innerHTML="";
+            const currentPrice = parseInt(showTotal.innerText);
+            total = currentPrice - price;
+            showTotal.innerText = total;
+        }
+
+    })
+    // removeCart = (id, price) => {
+    // onclick="removeCart(${id},${price})"
+    //     // const showTotal = document.getElementById('total-price')
+    //      document.getElementById(`single-cart-${id}`).innerHTML = " ";
+    //         const currentPrice = parseInt(showTotal.innerText);
+    //         total = currentPrice - price;
+    //         showTotal.innerText = total;
+    //         console.log(currentPrice)
+    //     // const cross = document.getElementById(`cart-cross-icon-${id}`)
+    //     // cross.addEventListener('click', () => {
+
+    //     // })
+
+    // }
+
 }
 
 const displayDetail = (plant) => {
@@ -74,6 +107,7 @@ const displayDetail = (plant) => {
                 </div>`
     document.getElementById('word_modal').showModal()
 }
+
 // display category card-----------------
 const displayCategoryCard = (data) => {
     const categoryCardContainer = document.getElementById('card-container');
@@ -86,7 +120,7 @@ const displayCategoryCard = (data) => {
                                 class="rounded-xl w-8/12 md:w-full md:h-[180px] h-40" />
                         </figure>
                         <div class="items-center text-left px-2 space-y-2">
-                            <h2 class="card-title mt-4 text-sm items-start inter font-semibold">${plant.name}</h2>
+                            <h2 onclick='loadCardDetail(${plant.id})' class="card-title mt-4 text-sm items-start inter font-semibold">${plant.name}</h2>
                             <p class="text-xs inter truncate">${plant.description}
                             </p>
                             <div class="flex justify-between">
@@ -141,13 +175,7 @@ const displayCards = (plants) => {
 
         //     })
         // }
-        let total = 0;
         const cardDiv = document.createElement('div');
-        // <!-- "image": "https://i.ibb.co.com/cSQdg7tf/mango-min.jpg",
-        //                   "name": "Mango Tree",
-        //                   "description": "A fast-growing tropical tree that produces delicious, juicy mangoes during summer. Its dense green canopy offers shade, while its sweet fruits are rich in vitamins and minerals.",
-        //                   "category": "Fruit Tree",
-        //                   "price": 500 -->
         cardDiv.innerHTML = `<div class="card bg-base-100 shadow-sm rounded-xl">
                         <figure class="px-1">
                             <img src="${plant.image}" alt="Shoes"
